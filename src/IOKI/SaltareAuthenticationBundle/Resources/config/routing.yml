@@ -1,0 +1,3 @@
+ioki_saltare_authentication_homepage:
+    pattern:  /secured
+    defaults: { _controller: IOKISaltareAuthenticationBundle:Default:index }

@@ -1,0 +1,18 @@
+security:
+    providers:
+        saltare_users:
+            id: saltare.user.provider
+
+    firewalls:
+        saltare:
+            pattern: ^/saltare/secured
+            saltare: true
+            security: true
+            provider: saltare_users
+
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        default:
+            anonymous: ~

@@ -1,0 +1,3 @@
+parameters:
+    saltare.users:
+        - {name: "Spider", password: "secret"}
