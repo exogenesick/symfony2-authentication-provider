@@ -2,7 +2,7 @@
 
 namespace IOKI\SaltareAuthenticationBundle\Security;
 
-use IOKI\SaltareAuthenticationBundle\Security\SaltareToken;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -33,25 +33,27 @@ class SaltareAuthenticationListener implements ListenerInterface
      */
     public function handle(GetResponseEvent $event)
     {
+        /** @var Request $request */
         $request = $event->getRequest();
 
-        $request->headers->has('');
-
-        try {
-            $saltareToken = new SaltareToken();
-            $saltareToken->setUser('Spider');
-
-            $authToken = $this->authenticationManager->authenticate($saltareToken);
-            $this->securityContext->setToken($authToken);
-
-            return;
-        } catch (AuthenticationException $failed) {
-            $response = new Response();
-            $response->setStatusCode(403);
-            $event->setResponse($response);
+        if (!$request->headers->has('php-auth-user') || !$request->headers->has('php-auth-pw')) {
+            $this->throwError($event);
         }
 
-        // By default deny authorization
+        $token = new SaltareToken($request->headers->get('php-auth-user'), $request->headers->get('php-auth-pw'));
+
+        try {
+            $this->securityContext->setToken($this->authenticationManager->authenticate($token));
+        } catch (AuthenticationException $e) {
+            $this->throwError($event);
+        }
+    }
+
+    /**
+     * @param GetResponseEvent $event
+     */
+    private function throwError(GetResponseEvent $event)
+    {
         $response = new Response();
         $response->setStatusCode(403);
         $event->setResponse($response);

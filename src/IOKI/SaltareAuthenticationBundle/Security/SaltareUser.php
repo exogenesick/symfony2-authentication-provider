@@ -2,44 +2,55 @@
 
 namespace IOKI\SaltareAuthenticationBundle\Security;
 
-use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class SaltareUser implements UserInterface{
+class SaltareUser implements UserInterface
+{
+    /** @var string */
+    protected $username;
+
+    /** @var string */
+    protected $password;
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @param array  $roles
+     */
+    public function __construct($username, $password, array $roles)
+    {
+        $this->username = $username;
+        $this->password = $password;
+        $this->roles = $roles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
 
     /**
      * Returns the roles granted to the user.
-     *
-     * @return Role[] The user roles
      */
     public function getRoles()
     {
     }
 
     /**
-     * Returns the password used to authenticate the user.
-     *
-     * @return string The password
-     */
-    public function getPassword()
-    {
-    }
-
-    /**
      * Returns the salt that was originally used to encode the password.
-     *
-     * @return string|null The salt
      */
     public function getSalt()
-    {
-    }
-
-    /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
     {
     }
 

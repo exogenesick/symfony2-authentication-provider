@@ -2,9 +2,9 @@
 
 namespace IOKI\SaltareAuthenticationBundle\Security;
 
-use IOKI\SaltareAuthenticationBundle\Security\SaltareToken;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class SaltareAuthenticationProvider implements AuthenticationProviderInterface
@@ -24,15 +24,21 @@ class SaltareAuthenticationProvider implements AuthenticationProviderInterface
      * @param TokenInterface $token
      *
      * @return SaltareToken
+     * @throws AuthenticationException
      */
     public function authenticate(TokenInterface $token)
     {
-        $authenticatedToken = new SaltareToken();
-        $authenticatedToken->setUser('Spider');
+        /** @var SaltareUser $user */
+        $user = $this->userProvider->loadUserByUsername($token->getUsername());
 
-        return $authenticatedToken;
+        if (null === $user || $user->getPassword() !== $token->getPassword()) {
+            throw new AuthenticationException('The authentication failed.');
+        }
 
-        //throw new AuthenticationException('The authentication failed.');
+        $token->setUser($user);
+        $token->setAuthenticated(true);
+
+        return $token;
     }
 
     /**

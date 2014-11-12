@@ -1,6 +1,7 @@
 services:
     saltare.user.provider:
         class: IOKI\SaltareAuthenticationBundle\Security\SaltareUserProvider
+        arguments: [%saltare.users%]
 
     saltare.authentication.provider:
         class:  IOKI\SaltareAuthenticationBundle\Security\SaltareAuthenticationProvider

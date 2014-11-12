@@ -17,16 +17,16 @@ class SaltareSecurityFactory implements SecurityFactoryInterface
      * @param string           $userProvider
      * @param mixed            $defaultEntryPoint
      *
-* @return array
-*/
+     * @return array
+     */
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
-        $providerId = 'security.authentication.provider.saltare.'.$id;
+        $providerId = 'security.authentication.provider.saltare.' . $id;
         $container
             ->setDefinition($providerId, new DefinitionDecorator('saltare.authentication.provider'))
             ->replaceArgument(0, new Reference($userProvider));
 
-        $listenerId = 'security.authentication.listener.saltare.'.$id;
+        $listenerId = 'security.authentication.listener.saltare.' . $id;
         $container
             ->setDefinition($listenerId, new DefinitionDecorator('saltare.authentication.listener'));
 

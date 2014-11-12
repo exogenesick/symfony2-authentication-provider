@@ -9,6 +9,19 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class SaltareUserProvider implements UserProviderInterface
 {
+    /** @var SaltareUser[] */
+    protected $users;
+
+    /**
+     * @param array $users
+     */
+    public function __construct($users)
+    {
+        foreach ($users as $user) {
+            $this->users[$user['username']] = new SaltareUser($user['username'], $user['password'], array());
+        }
+    }
+
     /**
      * Loads the user for the given username.
      *
@@ -19,7 +32,11 @@ class SaltareUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        return new SaltareUser();
+        if (!isset($this->users[$username])) {
+            throw new UsernameNotFoundException('User not found');
+        }
+
+        return $this->users[$username];
     }
 
     /**
@@ -32,6 +49,11 @@ class SaltareUserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
+        if (!$user instanceof SaltareUser) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+        }
+
+        return $this->loadUserByUsername($user->getUsername());
     }
 
     /**
@@ -43,5 +65,6 @@ class SaltareUserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
+        return $class === 'IOKI\SaltareAuthenticationBundle\Security\SaltareUser';
     }
 }
