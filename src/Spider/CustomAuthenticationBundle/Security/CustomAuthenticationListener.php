@@ -1,6 +1,6 @@
 <?php
 
-namespace IOKI\SaltareAuthenticationBundle\Security;
+namespace Spider\CustomAuthenticationBundle\Security;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 
-class SaltareAuthenticationListener implements ListenerInterface
+class CustomAuthenticationListener implements ListenerInterface
 {
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -38,12 +38,16 @@ class SaltareAuthenticationListener implements ListenerInterface
 
         if (!$request->headers->has('php-auth-user') || !$request->headers->has('php-auth-pw')) {
             $this->throwError($event);
+
+            return;
         }
 
-        $token = new SaltareToken($request->headers->get('php-auth-user'), $request->headers->get('php-auth-pw'));
+        $token = new CustomToken($request->headers->get('php-auth-user'), $request->headers->get('php-auth-pw'));
 
         try {
             $this->securityContext->setToken($this->authenticationManager->authenticate($token));
+
+            return;
         } catch (AuthenticationException $e) {
             $this->throwError($event);
         }
@@ -55,7 +59,7 @@ class SaltareAuthenticationListener implements ListenerInterface
     private function throwError(GetResponseEvent $event)
     {
         $response = new Response();
-        $response->setStatusCode(403);
+        $response->setStatusCode(Response::HTTP_FORBIDDEN);
         $event->setResponse($response);
     }
 }

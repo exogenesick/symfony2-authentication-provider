@@ -1,10 +1,10 @@
 <?php
 
-namespace IOKI\SaltareAuthenticationBundle\Security;
+namespace Spider\CustomAuthenticationBundle\Security;
 
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
-class SaltareToken extends AbstractToken
+class CustomToken extends AbstractToken
 {
     /** @var string */
     protected $username;
@@ -15,7 +15,7 @@ class SaltareToken extends AbstractToken
     /**
      * @param string $username
      * @param string $password
-     * @param array $roles
+     * @param array  $roles
      */
     public function __construct($username, $password, array $roles = array())
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace IOKI\SaltareAuthenticationBundle\Controller;
+namespace Spider\CustomAuthenticationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,6 +10,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return new JsonResponse(new \stdclass, 200);
+        return new JsonResponse(new \stdclass, Response::HTTP_OK);
     }
 }

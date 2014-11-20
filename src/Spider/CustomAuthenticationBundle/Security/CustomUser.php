@@ -1,10 +1,10 @@
 <?php
 
-namespace IOKI\SaltareAuthenticationBundle\Security;
+namespace Spider\CustomAuthenticationBundle\Security;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class SaltareUser implements UserInterface
+class CustomUser implements UserInterface
 {
     /** @var string */
     protected $username;
@@ -43,21 +43,15 @@ class SaltareUser implements UserInterface
     /**
      * Returns the roles granted to the user.
      */
-    public function getRoles()
-    {
-    }
+    public function getRoles() {}
 
     /**
      * Returns the salt that was originally used to encode the password.
      */
-    public function getSalt()
-    {
-    }
+    public function getSalt() {}
 
     /**
      * Removes sensitive data from the user.
      */
-    public function eraseCredentials()
-    {
-    }
+    public function eraseCredentials() {}
 }

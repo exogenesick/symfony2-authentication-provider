@@ -1,14 +1,14 @@
 security:
     providers:
-        saltare_users:
-            id: saltare.user.provider
+        custom_authentication.users:
+            id: custom_authentication.user.provider
 
     firewalls:
-        saltare:
-            pattern: ^/saltare/secured
-            saltare: true
+        custom_authentication:
+            pattern: ^/spider/secured
+            custom_authentication: true
             security: true
-            provider: saltare_users
+            provider: custom_authentication.users
 
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

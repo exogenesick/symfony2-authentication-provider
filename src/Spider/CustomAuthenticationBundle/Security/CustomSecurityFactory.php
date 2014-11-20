@@ -1,6 +1,6 @@
 <?php
 
-namespace IOKI\SaltareAuthenticationBundle\Security;
+namespace Spider\CustomAuthenticationBundle\Security;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
-class SaltareSecurityFactory implements SecurityFactoryInterface
+class CustomSecurityFactory implements SecurityFactoryInterface
 {
     /**
      * @param ContainerBuilder $container
@@ -21,14 +21,14 @@ class SaltareSecurityFactory implements SecurityFactoryInterface
      */
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
-        $providerId = 'security.authentication.provider.saltare.' . $id;
+        $providerId = 'security.authentication.provider.custom_authentication.' . $id;
         $container
-            ->setDefinition($providerId, new DefinitionDecorator('saltare.authentication.provider'))
+            ->setDefinition($providerId, new DefinitionDecorator('custom_authentication.authentication.provider'))
             ->replaceArgument(0, new Reference($userProvider));
 
-        $listenerId = 'security.authentication.listener.saltare.' . $id;
+        $listenerId = 'security.authentication.listener.custom_authentication.' . $id;
         $container
-            ->setDefinition($listenerId, new DefinitionDecorator('saltare.authentication.listener'));
+            ->setDefinition($listenerId, new DefinitionDecorator('custom_authentication.authentication.listener'));
 
         return array($providerId, $listenerId, $defaultEntryPoint);
     }
@@ -46,13 +46,11 @@ class SaltareSecurityFactory implements SecurityFactoryInterface
      */
     public function getKey()
     {
-        return 'saltare';
+        return 'custom_authentication';
     }
 
     /**
      * @param NodeDefinition $builder
      */
-    public function addConfiguration(NodeDefinition $builder)
-    {
-    }
+    public function addConfiguration(NodeDefinition $builder) {}
 }

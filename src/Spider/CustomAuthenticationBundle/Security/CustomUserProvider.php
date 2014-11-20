@@ -1,24 +1,24 @@
 <?php
 
-namespace IOKI\SaltareAuthenticationBundle\Security;
+namespace Spider\CustomAuthenticationBundle\Security;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class SaltareUserProvider implements UserProviderInterface
+class CustomUserProvider implements UserProviderInterface
 {
-    /** @var SaltareUser[] */
-    protected $users;
+    /** @var CustomUser[] */
+    protected $users = array();
 
     /**
      * @param array $users
      */
-    public function __construct($users)
+    public function __construct(array $users)
     {
         foreach ($users as $user) {
-            $this->users[$user['username']] = new SaltareUser($user['username'], $user['password'], array());
+            $this->users[$user['username']] = new CustomUser($user['username'], $user['password'], array());
         }
     }
 
@@ -28,6 +28,7 @@ class SaltareUserProvider implements UserProviderInterface
      * @param string $username The username
      *
      * @return UserInterface
+     *
      * @throws UsernameNotFoundException if the user is not found
      */
     public function loadUserByUsername($username)
@@ -45,11 +46,12 @@ class SaltareUserProvider implements UserProviderInterface
      * @param UserInterface $user
      *
      * @return UserInterface
+     *
      * @throws UnsupportedUserException if the account is not supported
      */
     public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof SaltareUser) {
+        if (!$user instanceof CustomUser) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
@@ -65,6 +67,6 @@ class SaltareUserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return $class === 'IOKI\SaltareAuthenticationBundle\Security\SaltareUser';
+        return $class === 'Spider\CustomAuthenticationBundle\Security\CustomUser';
     }
 }

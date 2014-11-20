@@ -1,0 +1,3 @@
+spider_authentication_check_url:
+    pattern:  /secured
+    defaults: { _controller: SpiderCustomAuthenticationBundle:Default:index }

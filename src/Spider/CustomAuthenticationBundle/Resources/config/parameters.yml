@@ -1,0 +1,3 @@
+parameters:
+  storage.users:
+    - { username: "Spider", password: "secret" }

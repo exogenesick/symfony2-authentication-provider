@@ -1,0 +1,12 @@
+services:
+  custom_authentication.user.provider:
+    class:      Spider\CustomAuthenticationBundle\Security\CustomUserProvider
+    arguments:  [%storage.users%]
+
+  custom_authentication.authentication.provider:
+    class:      Spider\CustomAuthenticationBundle\Security\CustomAuthenticationProvider
+    arguments:  [@custom_authentication.user.provider]
+
+  custom_authentication.authentication.listener:
+    class:      Spider\CustomAuthenticationBundle\Security\CustomAuthenticationListener
+    arguments:  [@security.context, @security.authentication.manager]

@@ -1,13 +1,13 @@
 <?php
 
-namespace IOKI\SaltareAuthenticationBundle\Security;
+namespace Spider\CustomAuthenticationBundle\Security;
 
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class SaltareAuthenticationProvider implements AuthenticationProviderInterface
+class CustomAuthenticationProvider implements AuthenticationProviderInterface
 {
     /** @var  UserProviderInterface */
     protected $userProvider;
@@ -15,7 +15,7 @@ class SaltareAuthenticationProvider implements AuthenticationProviderInterface
     /**
      * @param UserProviderInterface $userProvider
      */
-    function __construct(UserProviderInterface $userProvider)
+    public function __construct(UserProviderInterface $userProvider)
     {
         $this->userProvider = $userProvider;
     }
@@ -23,12 +23,13 @@ class SaltareAuthenticationProvider implements AuthenticationProviderInterface
     /**
      * @param TokenInterface $token
      *
-     * @return SaltareToken
+     * @return CustomToken
+     *
      * @throws AuthenticationException
      */
     public function authenticate(TokenInterface $token)
     {
-        /** @var SaltareUser $user */
+        /** @var CustomUser $user */
         $user = $this->userProvider->loadUserByUsername($token->getUsername());
 
         if (null === $user || $user->getPassword() !== $token->getPassword()) {
@@ -48,6 +49,6 @@ class SaltareAuthenticationProvider implements AuthenticationProviderInterface
      */
     public function supports(TokenInterface $token)
     {
-        return $token instanceof SaltareToken;
+        return $token instanceof CustomToken;
     }
 }
